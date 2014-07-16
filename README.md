@@ -41,8 +41,10 @@ String. Optionally specifies a tag name for use when pausing, resuming or cancel
 ```
 timer.cancel()  
 timer.cancel(timerReference)  
-timer.cancel(tagName)  
+timer.cancel(tagName)
 ```
+Returns 1 value. 'Found' (boolean). 'Found' indicates if any timers have been cancelled. If no timers were cancelled 'Found' will be false.
+
 ####Pause a timer  
 ```
 timer.pause()  

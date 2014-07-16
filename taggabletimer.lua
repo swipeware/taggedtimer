@@ -74,7 +74,10 @@ end
 
 timer.corona_cancel = timer.cancel
 timer.cancel = function(id)
+    local found = false
+
     local doCancel = function(id)
+        found = true
         timer.corona_cancel(timerStack[id])
         removeTimer(id)
     end
@@ -94,6 +97,8 @@ timer.cancel = function(id)
             doCancel(k)
         end
     end
+
+    return found
 end
 
 timer.corona_pause = timer.pause
