@@ -168,4 +168,4 @@ timer.resume = function(id)
     return timeRemaining, found
 end
 
-print("**** Corona timer API replaced with 'taggabletimer.lua' from Swipeware's github repository ****")
+print("**** Corona timer API replaced with 'taggedtimer.lua' from Swipeware's github repository ****")
