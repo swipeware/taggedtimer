@@ -1,4 +1,4 @@
--- taggabletimer.lua
+-- taggedtimer.lua
 --
 -- Common github module
 -- Drop-in replacement for Corona's timer API
