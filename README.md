@@ -18,10 +18,10 @@ You only need to require it once. The new timer functionality will be available 
 
 
 #Functions
+####Declare a timer  
 ```
 timer.performWithDelay(delay, listener [, iterations] [, tagname])  
 ```
-Declare a timer.  
 Returns a timer reference which can be used in pause() cancel() and resume().
 
 **delay (required)**  
@@ -37,27 +37,28 @@ Number. Optionally specifies the number of times listener is to be invoked. By d
 String. Optionally specifies a tag name for use when pausing, resuming or cancelling timers.
 
 ----
-
+####Cancel a timer  
 ```
 timer.cancel()  
 timer.cancel(timerReference)  
 timer.cancel(tagName)  
 ```
-Cancel a timer.  
+####Pause a timer  
 ```
 timer.pause()  
 timer.pause(timerReference)  
 timer.pause(tagName)  
 ```
-Pause a timer.  
+
 Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being paused. Will be nil when called with no arguments. 'Found' indicates if any timers have been paused. If no timers were paused 'Found' will be false.
 
+####Resume a timer  
 ```
 timer.resume()  
 timer.resume(timerReference)  
 timer.resume(tagName)  
 ```
-Resume a timer.  
+
 Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being resumed. Will be nil when called with no arguments. 'Found' indicates if any timers have been resumed. If no timers were resumed 'Found' will be false.
 
 **No arguments**  
