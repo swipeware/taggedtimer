@@ -1,7 +1,7 @@
 A simple Corona SDK module which is a drop-in replacement for the Corona timer.* API.  
 Supports all functions of the original timer API with the added ability to:
 
-- Add tag name to timers  
+- Add a tag name to timers  
 - Cancel / Pause / Resume timers by tag name
 - Cancel / Pause / Resume all active timers
 
@@ -13,7 +13,7 @@ Supports all functions of the original timer API with the added ability to:
 require( "taggabletimer" )
 ```
 
-Place the require statement at the top of your main.lua.  
+Place the require statement at the top of your main.lua. (No need to declare  a return variable as it replaces the existing timer API)  
 You only need to require it once. The new timer functionality will be available to all other modules in your project.
 
 
@@ -32,6 +32,8 @@ Number. Optionally specifies the number of times listener is to be invoked. By d
 
 **tagname (optional)**  
 String. Optionally specifies a tag name for use when pausing, resuming or cancelling timers.
+
+----
 
 ```
 timer.cancel()  
