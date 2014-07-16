@@ -10,7 +10,7 @@ Supports all functions of the original timer API with the added ability to:
 ```
 -- main.lua
 
-require( "taggabletimer" )
+require( "taggedtimer" )
 ```
 
 Place the require statement at the top of your main.lua. (No need to declare  a return variable as it replaces the existing timer API)  
