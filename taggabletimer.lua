@@ -98,8 +98,12 @@ end
 
 timer.corona_pause = timer.pause
 timer.pause = function(id)
+    local timeRemaining
+    local found = false
+
     local doPause = function(id)
-        timer.corona_pause(timerStack[id])
+        found = true
+        timeRemaining = timer.corona_pause(timerStack[id])
         timerStack[id].params.isPaused = true
     end
 
@@ -117,12 +121,21 @@ timer.pause = function(id)
         for k, v in pairs(timerStack) do
             doPause(k)
         end
+
+        timeRemaining = nil     -- set to nil when no specific timer id is given
     end
+
+    return timeRemaining, found
 end
 
 timer.corona_resume = timer.resume
 timer.resume = function(id)
+    local timeRemaining
+    local found = false
+
     local doResume = function(id)
+        found = true
+
         if (timerStack[id].params.isPaused) then
             timer.corona_resume(timerStack[id])
             timerStack[id].params.isPaused = false
@@ -143,7 +156,11 @@ timer.resume = function(id)
         for k, v in pairs(timerStack) do
             doResume(k)
         end
+
+        timeRemaining = nil     -- set to nil when no specific timer id is given
     end
+
+    return timeRemaining, found
 end
 
 print("**** Corona timer API replaced with 'taggabletimer.lua' from Swipeware's github repository ****")
