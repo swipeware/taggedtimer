@@ -1,6 +1,6 @@
 -- taggabletimer.lua
 --
--- Common utility module
+-- Common github module
 -- Drop-in replacement for Corona's timer API
 --
 -- The MIT License (MIT)
@@ -45,19 +45,29 @@ local defaultListener = function(event)
 end
 
 timer.corona_performWithDelay = timer.performWithDelay
-timer.performWithDelay = function(delay, listener, iterations, tag)
-    iterations = iterations or 1
-
+timer.performWithDelay = function(delay, listener, arg3, arg4)
     local timerID = "timer"..tostring(system.getTimer())
 
     timerStack[timerID] = timer.corona_performWithDelay(delay, defaultListener, iterations)
     timerStack[timerID].params = {}
     timerStack[timerID].params.id = timerID
     timerStack[timerID].params.listener = listener
-    timerStack[timerID].params.iterations = iterations
     timerStack[timerID].params.pass = 0    
     timerStack[timerID].params.isPaused = false
-    timerStack[timerID].params.tag = tag
+    timerStack[timerID].params.iterations = 1
+    timerStack[timerID].params.tag = nil
+
+    if (type(arg3) == "number") then
+        timerStack[timerID].params.iterations = arg3
+    end
+
+    if (type(arg3) == "string") then
+        timerStack[timerID].params.tag = arg3 
+    end
+
+    if (type(arg4) == "string") then
+        timerStack[timerID].params.tag = arg4
+    end
 
     return timerID
 end
