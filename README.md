@@ -40,16 +40,16 @@ String. Optionally specifies a tag name for use when pausing, resuming or cancel
 ####Cancel a timer  
 ```
 timer.cancel()  
-timer.cancel(timerReference)  
-timer.cancel(tagName)
+timer.cancel(timerReference, log)  
+timer.cancel(tagName, log)
 ```
 Returns 1 value. 'Found' (boolean). 'Found' indicates if any timers have been cancelled. If no timers were cancelled 'Found' will be false.
 
 ####Pause a timer  
 ```
 timer.pause()  
-timer.pause(timerReference)  
-timer.pause(tagName)  
+timer.pause(timerReference, log)  
+timer.pause(tagName, log)  
 ```
 
 Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being paused. Will be nil when called with no arguments. 'Found' indicates if any timers have been paused. If no timers were paused 'Found' will be false.
@@ -57,8 +57,8 @@ Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time rem
 ####Resume a timer  
 ```
 timer.resume()  
-timer.resume(timerReference)  
-timer.resume(tagName)  
+timer.resume(timerReference, log)  
+timer.resume(tagName, log)  
 ```
 
 Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being resumed. Will be nil when called with no arguments. 'Found' indicates if any timers have been resumed. If no timers were resumed 'Found' will be false.
@@ -71,3 +71,6 @@ Reference. The reference returned by timer.performWithDelay()
 
 **tagName (optional)**  
 String. Tag name as specified in the call to timer.performWithDelay()
+
+**log (optional)**  
+Boolean. Log a message in the console if timerReference or tagName not found. Defaults to true.
