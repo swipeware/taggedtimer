@@ -33,9 +33,12 @@ end
 
 local defaultListener = function(event)
     local timerHandle = event.source
+
     timerHandle.params.pass = timerHandle.params.pass + 1
 
-    if (timerHandle.params.listener) then
+    if (type(timerHandle.params.listener) == "table") then
+        timerHandle.params.listener.timer(event)
+    else -- assume function listener
         timerHandle.params.listener(event)
     end
 
@@ -46,7 +49,27 @@ end
 
 timer.corona_performWithDelay = timer.performWithDelay
 timer.performWithDelay = function(delay, listener, arg3, arg4)
+    assert(delay, "delay mandatory")
+    assert(listener, "listener mandatory")
+    if (type(listener) == "table") then
+        assert(listener.timer, "timer method mandatory for table listeners")
+    end
+
     local timerID = "timer"..tostring(system.getTimer())
+    local iterations = 1
+    local tag = nil
+
+    if (type(arg3) == "number") then
+        iterations = arg3
+    end
+
+    if (type(arg3) == "string") then
+        tag = arg3 
+    end
+
+    if (type(arg4) == "string") then
+        tag = arg4
+    end
 
     timerStack[timerID] = timer.corona_performWithDelay(delay, defaultListener, iterations)
     timerStack[timerID].params = {}
@@ -54,26 +77,18 @@ timer.performWithDelay = function(delay, listener, arg3, arg4)
     timerStack[timerID].params.listener = listener
     timerStack[timerID].params.pass = 0    
     timerStack[timerID].params.isPaused = false
-    timerStack[timerID].params.iterations = 1
-    timerStack[timerID].params.tag = nil
-
-    if (type(arg3) == "number") then
-        timerStack[timerID].params.iterations = arg3
-    end
-
-    if (type(arg3) == "string") then
-        timerStack[timerID].params.tag = arg3 
-    end
-
-    if (type(arg4) == "string") then
-        timerStack[timerID].params.tag = arg4
-    end
+    timerStack[timerID].params.iterations = iterations
+    timerStack[timerID].params.tag = tag
 
     return timerID
 end
 
 timer.corona_cancel = timer.cancel
-timer.cancel = function(id)
+timer.cancel = function(id, logError)
+    if (logError == nil) then
+        logError = true
+    end
+    
     local found = false
 
     local doCancel = function(id)
@@ -91,6 +106,10 @@ timer.cancel = function(id)
                     doCancel(k)
                 end
             end
+
+            if (not found) and (logError) then
+                print("timer.cancel(): id/tag '"..id.."' not found.")
+            end
         end
     else
         for k, v in pairs(timerStack) do
@@ -102,7 +121,11 @@ timer.cancel = function(id)
 end
 
 timer.corona_pause = timer.pause
-timer.pause = function(id)
+timer.pause = function(id, logError)
+    if (logError == nil) then
+        logError = true
+    end
+
     local timeRemaining
     local found = false
 
@@ -121,6 +144,10 @@ timer.pause = function(id)
                     doPause(k)
                 end
             end
+
+            if (not found) and (logError) then
+                print("timer.pause(): id/tag '"..id.."' not found.")
+            end
         end
     else
         for k, v in pairs(timerStack) do
@@ -134,7 +161,11 @@ timer.pause = function(id)
 end
 
 timer.corona_resume = timer.resume
-timer.resume = function(id)
+timer.resume = function(id, logError)
+    if (logError == nil) then
+        logError = true
+    end
+
     local timeRemaining
     local found = false
 
@@ -142,7 +173,7 @@ timer.resume = function(id)
         found = true
 
         if (timerStack[id].params.isPaused) then
-            timer.corona_resume(timerStack[id])
+            timeRemaining = timer.corona_resume(timerStack[id])
             timerStack[id].params.isPaused = false
         end
     end
@@ -155,6 +186,10 @@ timer.resume = function(id)
                 if (t.params.tag == id) then
                     doResume(k)
                 end
+            end
+
+            if (not found) and (logError) then
+                print("timer.resume(): id/tag '"..id.."' not found.")
             end
         end
     else
