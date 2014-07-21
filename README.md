@@ -3,6 +3,7 @@ Supports all functions of the original timer API with the added ability to:
 
 - Add a tag name to timers  
 - Cancel / Pause / Resume timers by tag name
+- Cancel / Pause / Resume timers by display-object reference
 - Cancel / Pause / Resume all active timers
 
 
