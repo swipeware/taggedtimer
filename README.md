@@ -37,7 +37,7 @@ Number. Optionally specifies the number of times listener is to be invoked. By d
 **tagname (optional)**  
 String. Optionally specifies a tag name for use when pausing, resuming or cancelling timers.
 
-**displayObject (optional)**
+**displayObject (optional)**  
 Reference. Optionally specifies a display-object reference for use when pausing, resuming or cancelling timers.
 
 ----
@@ -73,7 +73,7 @@ Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time rem
 **No arguments**  
 Will cancel / pause or resume all active timers.
 
-**displayObject (optional)**
+**displayObject (optional)**  
 Reference. The display-object reference returned by Corona's libraries.
 
 **timerReference (optional)**
