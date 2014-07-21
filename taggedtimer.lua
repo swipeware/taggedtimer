@@ -100,7 +100,6 @@ timer.cancel = function(id, logError)
     local found = false
 
     local doCancel = function(id)
-        print("cancel timer")
         found = true
         timer.corona_cancel(timerStack[id])
         removeTimer(id)
