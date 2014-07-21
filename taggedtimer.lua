@@ -48,7 +48,7 @@ local defaultListener = function(event)
 end
 
 timer.corona_performWithDelay = timer.performWithDelay
-timer.performWithDelay = function(delay, listener, arg3, arg4)
+timer.performWithDelay = function(delay, listener, arg3, arg4, arg5)
     assert(delay, "delay mandatory")
     assert(listener, "listener mandatory")
     if (type(listener) == "table") then
@@ -58,17 +58,24 @@ timer.performWithDelay = function(delay, listener, arg3, arg4)
     local timerID = "timer"..tostring(system.getTimer())
     local iterations = 1
     local tag = nil
+    local object = nil
 
     if (type(arg3) == "number") then
         iterations = arg3
-    end
-
-    if (type(arg3) == "string") then
+    elseif (type(arg3) == "string") then
         tag = arg3 
+    elseif (type(arg3) == "table") then
+        object = arg3
     end
 
     if (type(arg4) == "string") then
         tag = arg4
+    elseif (type(arg4) == "table") then
+        object = arg4
+    end
+
+    if (type(arg5) == "table") then
+        object = arg5
     end
 
     timerStack[timerID] = timer.corona_performWithDelay(delay, defaultListener, iterations)
@@ -79,6 +86,7 @@ timer.performWithDelay = function(delay, listener, arg3, arg4)
     timerStack[timerID].params.isPaused = false
     timerStack[timerID].params.iterations = iterations
     timerStack[timerID].params.tag = tag
+    timerStack[timerID].params.object = object
 
     return timerID
 end
@@ -92,6 +100,7 @@ timer.cancel = function(id, logError)
     local found = false
 
     local doCancel = function(id)
+        print("cancel timer")
         found = true
         timer.corona_cancel(timerStack[id])
         removeTimer(id)
@@ -100,15 +109,15 @@ timer.cancel = function(id, logError)
     if (id) then
         if (timerStack[id]) then
             doCancel(id)
-        else -- find tags
+        else -- find tags / object
             for k, t in pairs(timerStack) do
-                if (t.params.tag == id) then
+                if (t.params.tag == id) or (t.params.object == id) then
                     doCancel(k)
                 end
             end
 
             if (not found) and (logError) then
-                print("timer.cancel(): id/tag '"..id.."' not found.")
+                print("timer.cancel(): id/tag '"..tostring(id).."' not found.")
             end
         end
     else
@@ -138,15 +147,15 @@ timer.pause = function(id, logError)
     if (id) then
         if (timerStack[id]) then
             doPause(id)        
-        else -- find tags
+        else -- find tags / object
             for k, t in pairs(timerStack) do
-                if (t.params.tag == id) then
+                if (t.params.tag == id) or (t.params.object == id) then
                     doPause(k)
                 end
             end
 
             if (not found) and (logError) then
-                print("timer.pause(): id/tag '"..id.."' not found.")
+                print("timer.pause(): id/tag '"..tostring(id).."' not found.")
             end
         end
     else
@@ -181,15 +190,15 @@ timer.resume = function(id, logError)
     if (id) then
         if (timerStack[id]) then
             doResume(id)
-        else -- find tags
+        else -- find tags / object
             for k, t in pairs(timerStack) do
-                if (t.params.tag == id) then
+                if (t.params.tag == id) or (t.params.object == id) then
                     doResume(k)
                 end
             end
 
             if (not found) and (logError) then
-                print("timer.resume(): id/tag '"..id.."' not found.")
+                print("timer.resume(): id/tag '"..tostring(id).."' not found.")
             end
         end
     else
