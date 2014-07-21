@@ -20,7 +20,7 @@ You only need to require it once. The new timer functionality will be available 
 #Functions
 ####Declare a timer  
 ```
-timer.performWithDelay(delay, listener [, iterations] [, tagname])  
+timer.performWithDelay(delay, listener [, iterations] [, tagname] [, displayObject])
 ```
 Returns a timer reference which can be used in pause() cancel() and resume().
 
@@ -36,11 +36,15 @@ Number. Optionally specifies the number of times listener is to be invoked. By d
 **tagname (optional)**  
 String. Optionally specifies a tag name for use when pausing, resuming or cancelling timers.
 
+**displayObject (optional)**
+Reference. Optionally specifies a display-object reference for use when pausing, resuming or cancelling timers.
+
 ----
 ####Cancel a timer  
 ```
 timer.cancel()  
-timer.cancel(timerReference, log)  
+timer.cancel(displayObject, log)
+timer.cancel(timerReference, log)
 timer.cancel(tagName, log)
 ```
 Returns 1 value. 'Found' (boolean). 'Found' indicates if any timers have been cancelled. If no timers were cancelled 'Found' will be false.
@@ -48,7 +52,8 @@ Returns 1 value. 'Found' (boolean). 'Found' indicates if any timers have been ca
 ####Pause a timer  
 ```
 timer.pause()  
-timer.pause(timerReference, log)  
+timer.pause(displayObject, log)
+timer.pause(timerReference, log)
 timer.pause(tagName, log)  
 ```
 
@@ -57,7 +62,8 @@ Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time rem
 ####Resume a timer  
 ```
 timer.resume()  
-timer.resume(timerReference, log)  
+timer.resume(displayObject, log)
+timer.resume(timerReference, log)
 timer.resume(tagName, log)  
 ```
 
@@ -66,7 +72,10 @@ Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time rem
 **No arguments**  
 Will cancel / pause or resume all active timers.
 
-**timerReference (optional)**  
+**displayObject (optional)**
+Reference. The display-object reference returned by Corona's libraries.
+
+**timerReference (optional)**
 Reference. The reference returned by timer.performWithDelay()
 
 **tagName (optional)**  
