@@ -199,4 +199,19 @@ timer.resume = function(id, logError)
     return timeRemaining, found
 end
 
+timer.doesExist = function(id)
+    local found = false
+
+    if (id) then
+        for k, t in pairs(timerStack) do
+            if (t.params.tag == id) or (t.params.object == id) or (t == id) then
+                found = true
+                break
+            end
+        end
+    end
+
+    return found
+end
+
 print("**** Corona timer API replaced with 'taggedtimer.lua' from Swipeware's github repository ****")
