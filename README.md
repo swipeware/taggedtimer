@@ -5,7 +5,7 @@ Supports all functions of the original timer API with the added ability to:
 - Cancel / Pause / Resume timers by tag name
 - Cancel / Pause / Resume timers by display-object reference
 - Cancel / Pause / Resume all active timers
-
+- Test if a timer exists
 
 #Usage
 ```
@@ -48,7 +48,7 @@ timer.cancel(displayObject, log)
 timer.cancel(timerReference, log)
 timer.cancel(tagName, log)
 ```
-Returns 1 value. 'Found' (boolean). 'Found' indicates if any timers have been cancelled. If no timers were cancelled 'Found' will be false.
+Returns 1 value. (boolean). Indicates if any timers have been cancelled. If no timers were cancelled (boolean) will be false.
 
 ####Pause a timer  
 ```
@@ -58,7 +58,7 @@ timer.pause(timerReference, log)
 timer.pause(tagName, log)  
 ```
 
-Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being paused. Will be nil when called with no arguments. 'Found' indicates if any timers have been paused. If no timers were paused 'Found' will be false.
+Returns 2 values. (number), and (boolean). (number) is the time remaining for the timer being paused. Will be nil when called with no arguments. (boolean) indicates if any timers have been paused. If no timers were paused (boolean) will be false.
 
 ####Resume a timer  
 ```
@@ -68,7 +68,15 @@ timer.resume(timerReference, log)
 timer.resume(tagName, log)  
 ```
 
-Returns 2 values. 'Time' (number), and 'Found' (boolean). 'Time' is the time remaining for the timer being resumed. Will be nil when called with no arguments. 'Found' indicates if any timers have been resumed. If no timers were resumed 'Found' will be false.
+Returns 2 values. (number), and (boolean). (number) is the time remaining for the timer being resumed. Will be nil when called with no arguments. (boolean) indicates if any timers have been resumed. If no timers were resumed (boolean) will be false.
+
+####Test if a timer exists  
+```
+timer.doesExist(displayObject)
+timer.doesExist(timerReference)
+timer.doesExist(tagName)  
+```
+Return 1 value. (boolean). Will be true if the timer exists. Timers are automatically removed when they expire.
 
 **No arguments**  
 Will cancel / pause or resume all active timers.
