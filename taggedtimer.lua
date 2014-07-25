@@ -27,8 +27,8 @@
  
 local timerStack = {}
 
-local removeTimer = function(id)
-    timerStack[id] = nil
+local removeTimer = function(key)
+    timerStack[key] = nil
 end
 
 local defaultListener = function(event)
@@ -88,7 +88,7 @@ timer.performWithDelay = function(delay, listener, arg3, arg4, arg5)
     timerStack[timerID].params.tag = tag
     timerStack[timerID].params.object = object
 
-    return timerID
+    return timerStack[timerID]
 end
 
 timer.corona_cancel = timer.cancel
@@ -99,25 +99,21 @@ timer.cancel = function(id, logError)
     
     local found = false
 
-    local doCancel = function(id)
+    local doCancel = function(key)
         found = true
-        timer.corona_cancel(timerStack[id])
-        removeTimer(id)
+        timer.corona_cancel(timerStack[key])
+        removeTimer(key)
     end
 
     if (id) then
-        if (timerStack[id]) then
-            doCancel(id)
-        else -- find tags / object
-            for k, t in pairs(timerStack) do
-                if (t.params.tag == id) or (t.params.object == id) then
-                    doCancel(k)
-                end
+        for k, t in pairs(timerStack) do
+            if (t.params.tag == id) or (t.params.object == id) or (t == id) then
+                doCancel(k)
             end
+        end
 
-            if (not found) and (logError) then
-                print("timer.cancel(): id/tag '"..tostring(id).."' not found.")
-            end
+        if (not found) and (logError) then
+            print("timer.cancel(): id/tag '"..tostring(id).."' not found.")
         end
     else
         for k, v in pairs(timerStack) do
@@ -137,25 +133,21 @@ timer.pause = function(id, logError)
     local timeRemaining
     local found = false
 
-    local doPause = function(id)
+    local doPause = function(key)
         found = true
-        timeRemaining = timer.corona_pause(timerStack[id])
-        timerStack[id].params.isPaused = true
+        timeRemaining = timer.corona_pause(timerStack[key])
+        timerStack[key].params.isPaused = true
     end
 
     if (id) then
-        if (timerStack[id]) then
-            doPause(id)        
-        else -- find tags / object
-            for k, t in pairs(timerStack) do
-                if (t.params.tag == id) or (t.params.object == id) then
-                    doPause(k)
-                end
+        for k, t in pairs(timerStack) do
+            if (t.params.tag == id) or (t.params.object == id) or (t == id) then
+                doPause(k)
             end
+        end
 
-            if (not found) and (logError) then
-                print("timer.pause(): id/tag '"..tostring(id).."' not found.")
-            end
+        if (not found) and (logError) then
+            print("timer.pause(): id/tag '"..tostring(id).."' not found.")
         end
     else
         for k, v in pairs(timerStack) do
@@ -177,28 +169,24 @@ timer.resume = function(id, logError)
     local timeRemaining
     local found = false
 
-    local doResume = function(id)
+    local doResume = function(key)
         found = true
 
-        if (timerStack[id].params.isPaused) then
-            timeRemaining = timer.corona_resume(timerStack[id])
-            timerStack[id].params.isPaused = false
+        if (timerStack[key].params.isPaused) then
+            timeRemaining = timer.corona_resume(timerStack[key])
+            timerStack[key].params.isPaused = false
         end
     end
 
     if (id) then
-        if (timerStack[id]) then
-            doResume(id)
-        else -- find tags / object
-            for k, t in pairs(timerStack) do
-                if (t.params.tag == id) or (t.params.object == id) then
-                    doResume(k)
-                end
+        for k, t in pairs(timerStack) do
+            if (t.params.tag == id) or (t.params.object == id) or (t == id) then
+                doResume(k)
             end
+        end
 
-            if (not found) and (logError) then
-                print("timer.resume(): id/tag '"..tostring(id).."' not found.")
-            end
+        if (not found) and (logError) then
+            print("timer.resume(): id/tag '"..tostring(id).."' not found.")
         end
     else
         for k, v in pairs(timerStack) do
